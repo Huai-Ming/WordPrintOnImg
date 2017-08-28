@@ -55,6 +55,7 @@ namespace WordPrintOnImg
             //g.Dispose();
 
             GetImgs();
+            WriteTextOnImg();
             Console.Read();
         }
 
@@ -85,7 +86,7 @@ namespace WordPrintOnImg
             graphicsImage.SetClip(path);
             //graphicsImage.FillPath(new SolidBrush(Color.Red), path);
             graphicsImage.DrawImage(bitmap, new Point(0,0));
-            Bitmap bmpCrop = bmp.Clone(new Rectangle(x, y,70,70), bmp.PixelFormat);
+            Bitmap bmpCrop = bmp.Clone(new Rectangle(x, y,80,80), bmp.PixelFormat);
             bmpCrop.Save("slice.jpg", ImageFormat.Jpeg);
             //System.Drawing.Image test1 = (System.Drawing.Image)Bitmap.FromFile("test1.jpg");
             //var temp = new Bitmap(test1, new Size(50, 50));
@@ -187,6 +188,7 @@ namespace WordPrintOnImg
             Color StringColor2 = System.Drawing.ColorTranslator.FromHtml("#e80c88"); //customise color adding    
             string Str_TextOnImage = "学"; //Your Text On Image    
             string Str_TextOnImage2 = "宇"; //Your Text On Image    
+           
 
             graphicsImage.DrawString(Str_TextOnImage, new Font("arial", 40,
                 FontStyle.Regular), new SolidBrush(StringColor), new Point(130, 245),
@@ -198,7 +200,7 @@ namespace WordPrintOnImg
                 stringformat2);
 
            
-            bitmap.Save("iceberg1.jpg", ImageFormat.Jpeg);
+            bitmap.Save("icebergwithwords.jpg", ImageFormat.Jpeg);
         }
     }
 }
