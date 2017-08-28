@@ -11,8 +11,8 @@ namespace WordPrintOnImg
     public class CaptchaDrawer
     {
         //验证码的左上角(起点)的x y
-        private int mCaptchaWidth = 50;
-        private int mCaptchaHeight = 50;
+        private int mCaptchaWidth = 60;
+        private int mCaptchaHeight = 60;
 
         //验证码滑块的宽高
         private int mCaptchaX;

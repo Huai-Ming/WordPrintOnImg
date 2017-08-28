@@ -54,31 +54,59 @@ namespace WordPrintOnImg
             //redPen.Dispose();
             //g.Dispose();
 
-            SetClipPathCombine();
+            GetImgs();
             Console.Read();
         }
 
-        public static void SetClipPathCombine()
+        private static void GetImgs()
         {
-            
             string oriPicPath = "iceberg_cut.jpg";
+
             System.Drawing.Image bitmap = (System.Drawing.Image)Bitmap.FromFile(oriPicPath); // set image     
-            //draw the image object using a Graphics object    
             Bitmap bmp = new Bitmap(bitmap.Width, bitmap.Height);
-            Graphics graphicsImage = Graphics.FromImage(bmp);
             CaptchaDrawer drawer = new CaptchaDrawer(bitmap.Width, bitmap.Height);
             var path = drawer.GetCaptchaPath();
+            //Matrix translateMatrix = new Matrix();
+            //translateMatrix.Translate(100, 0);
+            //path.Transform(translateMatrix);
             path.CloseAllFigures();
+
+            SetClipPathCombine(path, bitmap,drawer.CaptchaX - 10, drawer.CaptchaY - 10);
+            GetImgWithoutSlice(path, bitmap);
+        }
+
+        public static void SetClipPathCombine(GraphicsPath path,Image bitmap, int x,int y)
+        {
+           
+            Bitmap bmp = new Bitmap(bitmap.Width, bitmap.Height);
+            //draw the image object using a Graphics object    
+            Graphics graphicsImage = Graphics.FromImage(bmp);
             //graphicsImage.SetClip(path);
             graphicsImage.SetClip(path);
             //graphicsImage.FillPath(new SolidBrush(Color.Red), path);
             graphicsImage.DrawImage(bitmap, new Point(0,0));
+            Bitmap bmpCrop = bmp.Clone(new Rectangle(x, y,70,70), bmp.PixelFormat);
+            bmpCrop.Save("slice.jpg", ImageFormat.Jpeg);
+            //System.Drawing.Image test1 = (System.Drawing.Image)Bitmap.FromFile("test1.jpg");
+            //var temp = new Bitmap(test1, new Size(50, 50));
+            //temp.Save("test2.jpg", ImageFormat.Jpeg);
+            graphicsImage.Dispose();
+        }
 
+        public static void GetImgWithoutSlice(GraphicsPath path, Image bitmap)
+        {
+            Graphics graphicsImage = Graphics.FromImage(bitmap);
            
-            bmp.Save("test1.jpg", ImageFormat.Jpeg);
-            System.Drawing.Image test1 = (System.Drawing.Image)Bitmap.FromFile("test1.jpg");
-            var temp = new Bitmap(test1, new Size(50, 50));
-            temp.Save("test2.jpg", ImageFormat.Jpeg);
+            graphicsImage.FillPath(new SolidBrush(Color.FromArgb(150, Color.Black)), path);
+            //graphicsImage.
+            //graphicsImage.DrawImage(bitmap, new Point(0, 0));
+            //Pen pen = new Pen(Color.Red);
+            //graphicsImage.DrawPath(pen, path);
+
+            bitmap.Save("bgwithoutspice.jpg", ImageFormat.Jpeg);
+            //System.Drawing.Image test1 = (System.Drawing.Image)Bitmap.FromFile("test1.jpg");
+            //var temp = new Bitmap(test1, new Size(50, 50));
+            //temp.Save("test2.jpg", ImageFormat.Jpeg);
             graphicsImage.Dispose();
             bitmap.Dispose();
         }
